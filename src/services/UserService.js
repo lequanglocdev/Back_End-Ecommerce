@@ -1,4 +1,5 @@
 const  User = require("../models/UserModel")
+const bcrypt = require("bcrypt")
 const createUser = (newUser) =>{
     return new Promise(async(resolve,reject) =>{
       const {name , email , password , confirmPassword, phone} = newUser
@@ -12,11 +13,11 @@ const createUser = (newUser) =>{
                     message: " The email is all already"
                 })
             }
+            const hashPassword = bcrypt.hashSync(password, 10)
            const createdUser  = await User.create({
             name,
             email,
-            password,
-            confirmPassword,
+            password: hashPassword,
             phone
            })
            if(createdUser){
