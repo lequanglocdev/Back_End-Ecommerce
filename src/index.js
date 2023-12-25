@@ -1,17 +1,23 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const mongoose = require("mongoose");
+const routes = require('./routers/index')
+const bodyParser = require('body-parser')
 
 dotenv.config()
+
 const app = express()
 const port = process.env.PORT || 3001
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})  
-console.log('process.env.MONGO_DB',process.env.MONGO_DB)
+app.get('/',(req,res) =>{
+  res.send("Hello World Loc")
+})
 
-mongoose.connect(`mongodb+srv://quanglocdev:${process.env.MONGO_DB}@cluster0.xbjqykj.mongodb.net/?retryWrites=true&w=majority`)
+app.use(bodyParser.json())
+routes(app);
+
+
+mongoose.connect(`${process.env.MONGO_DB}`)
     .then(() =>{
       console.log('connect db sucsess')
     })
@@ -20,5 +26,6 @@ mongoose.connect(`mongodb+srv://quanglocdev:${process.env.MONGO_DB}@cluster0.xbj
     })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log('Server is running in port: ', + port)
+ 
 })
