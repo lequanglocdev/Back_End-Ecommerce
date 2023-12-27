@@ -79,7 +79,89 @@ const loginUser = (userLogin) =>{
     })
 }
 
+const updateUser = (id,data) =>{
+    return new Promise(async(resolve,reject) =>{
+    
+        try {
+            const checkUser = await User.findOne({
+                _id: id
+            })
+            console.log('checkUser',checkUser)
+            if(checkUser === null){
+                resolve({
+                    status:'OK',
+                    message:'The user is not define'
+                })
+            }
+            // email ko to
+            // if(checkUser === null){
+            //     resolve({
+            //         status: 'ERR',
+            //         message: 'The user is not defined'
+            //     })
+            // }
+            // const comparePassword = bcrypt.compareSync(password, checkUser.password)
+
+            // if (!comparePassword) {
+            //     resolve({
+            //         status: 'ERR',
+            //         message: 'The password or user is incorrect'
+            //     })
+            // }
+            // const access_token = await genneralAccessToken({
+            //     id: checkUser.id,
+            //     isAdmin: checkUser.isAdmin
+            // })
+
+            // const refresh_token = await genneralRefreshToken({
+            //     id: checkUser.id,
+            //     isAdmin: checkUser.isAdmin
+            // })
+            const updateUser  = await User.findByIdAndUpdate(id,data,{new: true})
+            console.log("updateUser",updateUser)
+            resolve({
+                status: 'OK',
+                message: 'SUCCESS',
+                data:updateUser
+               
+            })
+        } 
+        catch (error) {
+            reject(error)
+        }
+    })
+}
+const deleteUser = (id) =>{
+    return new Promise(async(resolve,reject) =>{
+    
+        try {
+            const checkUser = await User.findOne({
+                _id: id
+            })
+            console.log('checkUser',checkUser)
+            if(checkUser === null){
+                resolve({
+                    status:'OK',
+                    message:'The user is not define'
+                })
+            }
+        
+           await User.findByIdAndDelete(id)
+         
+            resolve({
+                status: 'OK',
+                message: 'Delete User Success ',
+               
+            })
+        } 
+        catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     createUser,
-    loginUser
+    loginUser,
+    updateUser,
+    deleteUser
 }
