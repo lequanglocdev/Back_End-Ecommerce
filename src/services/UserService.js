@@ -159,9 +159,54 @@ const deleteUser = (id) =>{
         }
     })
 }
+const getAllUser = () =>{
+    return new Promise(async(resolve,reject) =>{
+    
+        try {
+            
+            const getAllUser =  await User.find(id)
+            
+            resolve({
+                status: 'OK',
+                message: 'getAll User Success ',
+                data: getAllUser
+            })
+        } 
+        catch (error) {
+            reject(error)
+        }
+    })
+}
+const getDetailsUser = () =>{
+    return new Promise(async(resolve,reject) =>{
+    
+        try {
+            
+            const user =  await User.findOne({
+                _id: id
+            })
+            if(user === null){
+                resolve({
+                    status:'ERR',
+                    message:'The user is not defind'
+                })
+            }
+            resolve({
+                status: 'OK',
+                message: 'sucess ',
+                data: user
+            })
+        } 
+        catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     createUser,
     loginUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getAllUser,
+    getDetailsUser
 }
